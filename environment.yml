@@ -1,0 +1,10 @@
+name: splats2
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch
+  - torchvision
+  - numpy
+  - pillow

@@ -1,3 +1,5 @@
+import time
+
 import torch 
 from dataclasses import dataclass
 from PIL import Image
@@ -246,6 +248,8 @@ def train(target: torch.Tensor, n_gaussians: int = 200, n_iters: int = 1500, lr:
 
     print(f"Training {n_gaussians} Gaussians on {W}x{H} image for {n_iters} steps...\n")
 
+    t_start = time.perf_counter()
+
     for step in range(n_iters):
         # Reset gradients from the last step
         optimizer.zero_grad()
@@ -272,6 +276,9 @@ def train(target: torch.Tensor, n_gaussians: int = 200, n_iters: int = 1500, lr:
             gaussians = duplicate(gaussians)
             # Rebuild optimizer since the tensors changed
             optimizer = torch.optim.Adam(gaussians.params(), lr=lr)
+
+    elapsed = time.perf_counter() - t_start
+    print(f"\nTraining complete in {elapsed:.2f}s ({elapsed / n_iters * 1000:.1f} ms/step)")
 
     return gaussians
 
